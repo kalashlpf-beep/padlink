@@ -35,10 +35,10 @@ class MainActivity : AppCompatActivity() {
         0x25, 0x01,
         0x75, 0x01,
         0x95, 0x11,
-        0x81, 0x02,
+        0x81.toByte(), 0x02,
         0x75, 0x07,
         0x95, 0x01,
-        0x81, 0x03,
+        0x81.toByte(), 0x03,
         0x05, 0x01,
         0x09, 0x30,
         0x09, 0x31,
@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
         0x25, 0x7F,
         0x75, 0x08,
         0x95, 0x04,
-        0x81, 0x02,
+        0x81.toByte(), 0x02,
         0xC0.toByte(),
         0xC0.toByte()
     )
@@ -136,7 +136,7 @@ class MainActivity : AppCompatActivity() {
             "Pad Link Gamepad",
             "Manette virtuelle via telephone",
             "PadLink",
-            BluetoothHidDevice.SUBCLASS1_GAMEPAD,
+            BluetoothHidDevice.SUBCLASS1_NONE,
             hidDescriptor
         )
 
