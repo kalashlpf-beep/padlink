@@ -1,0 +1,2 @@
+rootProject.name = "PadLink"
+include ':app'
