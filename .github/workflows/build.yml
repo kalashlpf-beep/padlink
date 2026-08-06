@@ -21,8 +21,11 @@ jobs:
         run: yes | sdkmanager --licenses || true
         continue-on-error: true
 
+      - name: Generer le wrapper Gradle (version compatible)
+        run: gradle wrapper --gradle-version 8.4
+
       - name: Compiler l'APK (debug)
-        run: gradle assembleDebug
+        run: ./gradlew assembleDebug
 
       - name: Publier l'APK compilee
         uses: actions/upload-artifact@v4
