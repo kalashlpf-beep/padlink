@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Pad Link</title>
+<style>
+  :root{
+    --bg:#0b0d12; --panel:#12151c; --line:#242938;
+    --accent:#7ef0c0; --accent2:#ff6b6b; --text:#e8ecf1; --muted:#5c6474;
+    --tri:#4fd8a0; --circ:#ff5f7e; --cross:#4fa8e0; --sq:#e05fd0;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent; user-select:none;}
+  html,body{margin:0; padding:0; width:100%; height:100%; background:var(--bg); color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    overflow:hidden; overscroll-behavior:none; touch-action:none;}
+
+  #statusDot{position:fixed; top:6px; left:50%; transform:translateX(-50%); z-index:6;
+    width:7px; height:7px; border-radius:50%; background:var(--accent2);}
+  #statusDot.on{background:var(--accent);}
+
+  #topBar{position:fixed; top:0; left:0; right:0; height:15vh; display:flex; z-index:5;}
+  .trigCol{width:22%; display:flex; flex-direction:column;}
+  .trig{flex:1; margin:2px; border-radius:8px; background:var(--panel); border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700;
+    letter-spacing:.06em; color:var(--muted);}
+  .trig.active{background:#1c2b25; color:var(--accent); border-color:var(--accent);}
+  #midBtns{flex:1; display:flex; align-items:center; justify-content:center; gap:10px;}
+  .pill{padding:6px 12px; font-size:10px; letter-spacing:.08em; text-transform:uppercase;
+    background:var(--panel); border:1px solid var(--line); border-radius:16px; color:var(--muted);}
+  .pill.active{color:var(--accent); border-color:var(--accent);}
+  #bPS{width:34px; height:34px; border-radius:50%; background:var(--panel); border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:700; color:var(--muted);}
+  #bPS.active{color:var(--accent); border-color:var(--accent);}
+
+  #left, #right{position:fixed; top:15vh; bottom:0; width:50%; display:flex; flex-direction:column;}
+  #left{left:0;} #right{right:0;}
+
+  #dpad{flex:0 0 42%; display:grid; grid-template-columns:1fr 1fr 1fr; grid-template-rows:1fr 1fr 1fr; place-items:center;}
+  .dbtn{width:26%; height:26%; background:var(--panel); border:1px solid var(--line); border-radius:6px;}
+  .dbtn.active{background:#1c2b25; border-color:var(--accent);}
+  #dUp{grid-column:2; grid-row:1;} #dLeft{grid-column:1; grid-row:2;}
+  #dRight{grid-column:3; grid-row:2;} #dDown{grid-column:2; grid-row:3;}
+
+  #faceBtns{flex:0 0 42%; display:grid; grid-template-columns:1fr 1fr 1fr; grid-template-rows:1fr 1fr 1fr; place-items:center;}
+  .fb{width:60%; height:60%; border-radius:50%; background:var(--panel); border:2px solid; display:flex; align-items:center; justify-content:center; font-size:15px; font-weight:700;}
+  .fb.active{transform:scale(.9);}
+  #bTri{grid-column:2;grid-row:1; color:var(--tri); border-color:var(--tri);}
+  #bSq{grid-column:1;grid-row:2; color:var(--sq); border-color:var(--sq);}
+  #bCirc{grid-column:3;grid-row:2; color:var(--circ); border-color:var(--circ);}
+  #bCross{grid-column:2;grid-row:3; color:var(--cross); border-color:var(--cross);}
+
+  #stickRowL, #stickRowR{flex:1; display:flex; align-items:center; justify-content:center; gap:8px; position:relative;}
+  .stickBase{width:32vw; height:32vw; max-width:170px; max-height:170px; border-radius:50%;
+    background:var(--panel); border:1px solid var(--line); position:relative;}
+  .stickNub{position:absolute; width:40%; height:40%; border-radius:50%;
+    background:linear-gradient(160deg,var(--accent),#3fae86); top:30%; left:30%;
+    box-shadow:0 4px 18px rgba(126,240,192,.35);}
+  .l3r3{position:absolute; bottom:2px; font-size:9px; letter-spacing:.1em; color:var(--muted);
+    padding:4px 10px; border:1px solid var(--line); border-radius:10px; background:var(--panel);}
+  .l3r3.active{color:var(--accent); border-color:var(--accent);}
+</style>
+</head>
+<body>
+
+<div id="statusDot"></div>
+
+<div id="topBar">
+  <div class="trigCol"><div class="trig" id="L2">L2</div><div class="trig" id="L1">L1</div></div>
+  <div id="midBtns">
+    <div class="pill" id="bSelect">Select</div>
+    <div id="bPS">PS</div>
+    <div class="pill" id="bStart">Start</div>
+  </div>
+  <div class="trigCol"><div class="trig" id="R2">R2</div><div class="trig" id="R1">R1</div></div>
+</div>
+
+<div id="left">
+  <div id="dpad">
+    <div class="dbtn" id="dUp"></div>
+    <div class="dbtn" id="dLeft"></div>
+    <div class="dbtn" id="dRight"></div>
+    <div class="dbtn" id="dDown"></div>
+  </div>
+  <div id="stickRowL">
+    <div class="stickBase" id="baseL"><div class="stickNub" id="nubL"></div></div>
+    <div class="l3r3" id="bL3">L3</div>
+  </div>
+</div>
+
+<div id="right">
+  <div id="faceBtns">
+    <div class="fb" id="bTri">△</div>
+    <div class="fb" id="bSq">□</div>
+    <div class="fb" id="bCirc">○</div>
+    <div class="fb" id="bCross">✕</div>
+  </div>
+  <div id="stickRowR">
+    <div class="stickBase" id="baseR"><div class="stickNub" id="nubR"></div></div>
+    <div class="l3r3" id="bR3">R3</div>
+  </div>
+</div>
+
+<script>
+function onNativeStatus(state){
+  document.getElementById('statusDot').classList.toggle('on', state === 'connected');
+}
+
+function sendButton(name, pressed){ if(window.Android) Android.onButton(name, pressed); }
+function sendStick(axis, x, y){ if(window.Android) Android.onStick(axis, x, y); }
+
+function bindButton(el, name){
+  const on = (ev)=>{ ev.preventDefault(); el.classList.add('active'); sendButton(name, true); if(navigator.vibrate) navigator.vibrate(12); };
+  const off = (ev)=>{ ev.preventDefault(); el.classList.remove('active'); sendButton(name, false); };
+  el.addEventListener('touchstart', on, {passive:false});
+  el.addEventListener('touchend', off, {passive:false});
+  el.addEventListener('touchcancel', off, {passive:false});
+}
+[['L1','L1'],['L2','L2'],['R1','R1'],['R2','R2'],
+ ['bSelect','SELECT'],['bStart','START'],['bPS','PS'],
+ ['dUp','DUP'],['dDown','DDOWN'],['dLeft','DLEFT'],['dRight','DRIGHT'],
+ ['bTri','TRIANGLE'],['bSq','SQUARE'],['bCirc','CIRCLE'],['bCross','CROSS'],
+ ['bL3','L3'],['bR3','R3']
+].forEach(([id,name]) => bindButton(document.getElementById(id), name));
+
+function setupStick(baseId, nubId, axisName){
+  const base = document.getElementById(baseId);
+  const nub = document.getElementById(nubId);
+  let active=false, id=null, rect=null;
+
+  function move(clientX, clientY){
+    const cx = rect.left + rect.width/2, cy = rect.top + rect.height/2;
+    let dx = clientX-cx, dy = clientY-cy;
+    const max = rect.width/2;
+    const dist = Math.min(Math.hypot(dx,dy), max);
+    const ang = Math.atan2(dy,dx);
+    dx = Math.cos(ang)*dist; dy = Math.sin(ang)*dist;
+    nub.style.transform = `translate(${dx}px, ${dy}px)`;
+    sendStick(axisName, +(dx/max).toFixed(3), -+(dy/max).toFixed(3));
+  }
+  function reset(){ nub.style.transform='translate(0,0)'; sendStick(axisName, 0, 0); }
+
+  base.addEventListener('touchstart', (e)=>{
+    e.preventDefault(); active=true; id=e.changedTouches[0].identifier;
+    rect = base.getBoundingClientRect();
+    move(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+  }, {passive:false});
+  window.addEventListener('touchmove', (e)=>{
+    if(!active) return;
+    for(const t of e.changedTouches){ if(t.identifier===id){ e.preventDefault(); move(t.clientX,t.clientY); } }
+  }, {passive:false});
+  window.addEventListener('touchend', (e)=>{
+    for(const t of e.changedTouches){ if(t.identifier===id){ active=false; id=null; reset(); } }
+  }, {passive:false});
+}
+setupStick('baseL','nubL','left');
+setupStick('baseR','nubR','right');
+</script>
+</body>
+</html>
